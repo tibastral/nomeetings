@@ -542,14 +542,16 @@ goalsCompletionsIndex goals notes =
     wizardView
         3
         (Share
-            ((goals
-                |> List.filter (\e -> e.attributes.achieved)
-                |> List.map .attributes
-                |> List.map .title
-                |> List.map (\e -> "Goal achieved: " ++ e)
-                |> String.join "\n"
-             )
-                ++ "\n"
+            ("# Achievements:\n\n"
+                ++ (goals
+                        |> List.filter (\e -> e.attributes.achieved)
+                        |> List.map .attributes
+                        |> List.map .title
+                        |> List.map (\e -> "- " ++ e)
+                        |> String.join "\n"
+                   )
+                ++ "\n\n\n"
+                ++ "# Notes:\n\n"
                 ++ notes
             )
         )
