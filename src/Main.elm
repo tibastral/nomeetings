@@ -35,6 +35,7 @@ import Elegant.Padding as Padding
 import Elegant.Typography as Typography
 import Html
 import Html.Attributes
+import Html.Events.Extra.Touch as Touch
 import Json.Decode as Decode exposing (Decoder)
 import Modifiers exposing (..)
 import Task
@@ -167,9 +168,10 @@ checkView goal =
                     ]
                 ]
             , flexItem
-                [ style [ Style.box [ Box.cursorPointer ] ]
-                , E.onClick (UpdateGoal goal.id SwitchCompletion)
-                ]
+                ([ style [ Style.box [ Box.cursorPointer ] ]
+                 ]
+                    ++ touchOrClickEvent (UpdateGoal goal.id SwitchCompletion)
+                )
                 [ grayScaledText
                     (if goal.attributes.achieved then
                         1
@@ -267,6 +269,18 @@ linePercent numerator denominator =
         ]
 
 
+linkStyle =
+    style
+        [ Style.box
+            [ Box.cursorPointer
+            , Box.textColor Color.white
+            , Box.typography [ Typography.noDecoration ]
+            , Box.paddingAll Constants.large
+            ]
+        , Style.block []
+        ]
+
+
 nextButton numerator denominator nextPage linkText =
     flex
         [ style
@@ -282,19 +296,14 @@ nextButton numerator denominator nextPage linkText =
             [ div [ style [ Style.box [ Box.paddingBottom Constants.medium ] ] ] [ text (String.fromInt numerator ++ " of " ++ String.fromInt denominator) ]
             , linePercent numerator denominator
             ]
-        , flexItem [ style [ Style.box [ Box.paddingAll Constants.large ] ] ]
+        , flexItem []
             [ case nextPage of
                 Goto to ->
                     span
-                        [ E.onClick to
-                        , style
-                            [ Style.box
-                                [ Box.cursorPointer
-                                , Box.textColor Color.white
-                                , Box.typography [ Typography.noDecoration ]
-                                ]
-                            ]
-                        ]
+                        ([ linkStyle
+                         ]
+                            ++ touchOrClickEvent to
+                        )
                         [ text linkText ]
 
                 Share content ->
@@ -303,13 +312,7 @@ nextButton numerator denominator nextPage linkText =
                             ("mailto:?subject=Meeting defriefing&body="
                                 ++ (content |> String.replace "\n" "%0D%0A")
                             )
-                        , style
-                            [ Style.box
-                                [ Box.cursorPointer
-                                , Box.textColor Color.white
-                                , Box.typography [ Typography.noDecoration ]
-                                ]
-                            ]
+                        , linkStyle
                         ]
                         [ text linkText ]
             ]
@@ -489,6 +492,10 @@ goalsCompletionsIndex goals notes =
         "share"
 
 
+touchOrClickEvent msg =
+    [ A.rawAttribute (Touch.onStart (\_ -> msg)), E.onClick msg ]
+
+
 backButton =
     menuLinkTo (StandardHistoryWrapper Router.Back) "< back"
 
@@ -499,13 +506,14 @@ restartButton =
 
 menuLinkTo msg label =
     a
-        [ style
+        ([ style
             [ Style.box
                 [ Box.cursorPointer
                 ]
             ]
-        , E.onClick msg
-        ]
+         ]
+            ++ touchOrClickEvent msg
+        )
         [ title label ]
 
 
