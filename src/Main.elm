@@ -172,10 +172,10 @@ checkView goal =
                 ]
                 [ grayScaledText
                     (if goal.attributes.achieved then
-                        0.5
+                        1
 
                      else
-                        1
+                        0.5
                     )
                     goal.attributes.title
                 ]
@@ -217,71 +217,11 @@ titleView goal =
         ]
 
 
-titleViewWithDelete :
-    Goal
-    -> NodeWithStyle Msg
-titleViewWithDelete goal =
-    button
-        [ standardCellStyle ]
-        [ flex
-            []
-            [ flexItem [ E.onClick <| DestroyGoal goal.id ] [ text "⛔" ]
-            , flexItem [ style [ Style.box [ Box.padding [ Padding.left Constants.medium ] ] ] ]
-                [ text goal.attributes.title ]
-            ]
-        ]
-
-
-
--- rentrer des apparts, des photos, nom d'appart, plus les données, parking
-
-
-pad : Modifier (A.BoxContainer (A.MaybeBlockContainer a))
-pad =
-    style
-        [ Style.block []
-        , Style.box [ Box.padding [ Padding.all Constants.medium ] ]
-        ]
-
-
-result : String -> Float -> NodeWithStyle msg
-result label value =
-    node [ pad ]
-        [ text <| label
-        , br
-        , text (value |> String.fromFloat)
-        ]
-
-
-collocNumberId =
-    "collocNumber"
-
-
-toPositiveInt : Int -> Int
-toPositiveInt i =
-    if i < 1 then
-        1
-
-    else
-        i
-
-
-
--- assurance : Generali
-
-
 {-| returns a background with a color
 -}
 backgroundColor : Color.Color -> Modifier Box.Box
 backgroundColor color =
     Box.background [ Elegant.color color ]
-
-
-textToHtml : String -> List (NodeWithStyle msg)
-textToHtml =
-    (>>)
-        (String.split "\n")
-        (List.foldr (\e accu -> accu ++ [ text e, br ]) [])
 
 
 title : String -> NodeWithStyle msg
@@ -376,6 +316,13 @@ nextButton numerator denominator nextPage linkText =
         ]
 
 
+textToHtml : String -> List (NodeWithStyle msg)
+textToHtml =
+    (>>)
+        (String.split "\n")
+        (List.foldr (\e accu -> accu ++ [ text e, br ]) [])
+
+
 largePadderHorizontalAndBottom =
     div
         [ style
@@ -452,7 +399,7 @@ goalsIndex goals =
             }
         , largePadderHorizontalAndBottom
             [ h1 [ noMargin ] [ grayScaledText 0.8 "Before" ]
-            , p [ noMargin ] [ grayScaledText 0.4 "Set meeting objectives" ]
+            , p [ noMargin ] [ grayScaledText 0.4 "Set meeting goals" ]
             ]
         ]
         (largePadder
@@ -530,10 +477,14 @@ goalsCompletionsIndex goals notes =
             ]
         ]
         (largePadder
-            (goals
-                |> List.sortBy .id
-                |> List.map checkView
-            )
+            [ div []
+                (goals
+                    |> List.filter (\e -> not (String.isEmpty e.attributes.title))
+                    |> List.sortBy .id
+                    |> List.map checkView
+                )
+            , div [] (notes |> textToHtml)
+            ]
         )
         "share"
 
@@ -718,11 +669,6 @@ saveGoalAttributes currentTime ({ data } as model) =
             }
     in
     { model | data = newData }
-
-
-performSuccessfulTask : a -> Cmd a
-performSuccessfulTask msg =
-    Task.perform identity (Task.succeed msg)
 
 
 destroyGoal : Int -> Model -> Model
