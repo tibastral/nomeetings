@@ -434,7 +434,7 @@ notesIndex notes =
                 [ style
                     [ Style.block
                         [ Block.width (percent 100)
-                        , Block.height (px 200)
+                        , Block.height (percent 100)
                         ]
                     , Style.box
                         [ Box.border [ Border.all [ Border.none ] ]
@@ -524,27 +524,48 @@ wizardView step nextPage pageTitle pageContent linkText =
                 [ Flex.direction Flex.column
                 , Flex.justifyContent Flex.spaceBetween
                 ]
-            , Style.block [ Block.minHeight (vh 100) ]
+            , Style.block [ Block.minHeight (percent 100) ]
             , Style.box [ backgroundColor gray ]
             ]
         ]
-        [ flexItem []
-            [ div
+        [ flexItem [ style [ Style.block [ Block.height (percent 100) ] ] ]
+            [ flex
                 [ style
-                    [ Style.box
-                        [ backgroundColor Color.white
-                        , Box.border
-                            [ Border.bottom
-                                [ Border.color (Color.grayscale 0.2)
-                                , Border.solid
-                                , Border.thickness (px 1)
+                    [ Style.flexContainerProperties
+                        [ Flex.direction Flex.column
+                        , Flex.justifyContent Flex.spaceBetween
+                        ]
+                    , Style.block [ Block.height (percent 100) ]
+                    ]
+                ]
+                [ flexItem
+                    [ style
+                        [ Style.box
+                            [ backgroundColor Color.white
+                            , Box.border
+                                [ Border.bottom
+                                    [ Border.color (Color.grayscale 0.2)
+                                    , Border.solid
+                                    , Border.thickness (px 1)
+                                    ]
                                 ]
+                            ]
+                        , Style.flexItemProperties
+                            [ Flex.shrink 0
                             ]
                         ]
                     ]
+                    pageTitle
+                , flexItem
+                    [ style
+                        [ Style.block [ Block.height (percent 100) ]
+                        , Style.flexItemProperties
+                            [ Flex.shrink 0
+                            ]
+                        ]
+                    ]
+                    [ pageContent ]
                 ]
-                pageTitle
-            , pageContent
             ]
         , flexItem [] [ nextButton step 3 nextPage linkText ]
         ]
@@ -552,9 +573,9 @@ wizardView step nextPage pageTitle pageContent linkText =
 
 view : Model -> NodeWithStyle Msg
 view { history, data } =
-    node
+    div
         [ style
-            [ Style.block []
+            [ Style.blockProperties [ Block.height (percent 100) ]
             , Style.box
                 [ Box.typography
                     [ Typography.fontFamilySansSerif
@@ -590,6 +611,10 @@ updateGoalBasedOnMsg msg goal =
         | attributes =
             updateGoalAttributesBasedOnMsg msg attributes
     }
+
+
+eounah =
+    2
 
 
 updateGoalHelper : Goal -> UpdateGoalMsg -> Model -> Model
