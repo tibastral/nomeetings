@@ -435,6 +435,7 @@ notesIndex notes =
                     [ Style.block
                         [ Block.width (percent 100)
                         , Block.height (percent 100)
+                        , Block.minHeight (px 300)
                         ]
                     , Style.box
                         [ Box.border [ Border.all [ Border.none ] ]
@@ -528,7 +529,14 @@ wizardView step nextPage pageTitle pageContent linkText =
             , Style.box [ backgroundColor gray ]
             ]
         ]
-        [ flexItem [ style [ Style.block [ Block.height (percent 100) ] ] ]
+        [ flexItem
+            [ style
+                [ Style.block [ Block.height (percent 100) ]
+                , Style.flexItemProperties
+                    [ Flex.grow 1
+                    ]
+                ]
+            ]
             [ flex
                 [ style
                     [ Style.flexContainerProperties
@@ -550,18 +558,12 @@ wizardView step nextPage pageTitle pageContent linkText =
                                     ]
                                 ]
                             ]
-                        , Style.flexItemProperties
-                            [ Flex.shrink 0
-                            ]
                         ]
                     ]
                     pageTitle
                 , flexItem
                     [ style
                         [ Style.block [ Block.height (percent 100) ]
-                        , Style.flexItemProperties
-                            [ Flex.shrink 0
-                            ]
                         ]
                     ]
                     [ pageContent ]
