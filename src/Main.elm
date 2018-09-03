@@ -369,6 +369,18 @@ alignedCellWithPurpleBackground =
     GridExtra.alignedCell [ Style.box [ Box.backgroundColor Color.purple ] ]
 
 
+objectivesIndexToHtml =
+    B.stylise objectivesIndex
+
+
+notesIndexToHtml =
+    B.stylise notesIndex
+
+
+objectivesCompletionsIndexToHtml =
+    B.stylise2 objectivesCompletionsIndex
+
+
 insidePageView : Data -> Router.Page Route Msg -> Maybe (Router.Transition Route Msg) -> NodeWithStyle Msg
 insidePageView data page transition =
     let
@@ -377,13 +389,13 @@ insidePageView data page transition =
     in
     case page.route of
         ObjectivesIndex ->
-            objectivesIndex objectives
+            B.lazy objectivesIndexToHtml objectives
 
         NotesIndex ->
-            notesIndex data.notes
+            B.lazy notesIndexToHtml data.notes
 
         ObjectivesCompletionsIndex ->
-            objectivesCompletionsIndex objectives data.notes
+            B.lazy2 objectivesCompletionsIndexToHtml objectives data.notes
 
 
 blank =
@@ -506,7 +518,7 @@ contactButton =
 
 
 restartButton =
-    menuLinkTo Restart "start over"
+    menuLinkTo Restart "restart"
 
 
 menuLinkToHref href label =
@@ -547,8 +559,7 @@ wizardView step nextPage pageTitle pageContent linkText =
         ]
         [ flexItem
             [ style
-                [ Style.block [ Block.height (percent 100) ]
-                , Style.flexItemProperties
+                [ Style.flexItemProperties
                     [ Flex.grow 1
                     ]
                 ]
@@ -579,13 +590,22 @@ wizardView step nextPage pageTitle pageContent linkText =
                     pageTitle
                 , flexItem
                     [ style
-                        [ Style.block [ Block.height (percent 100) ]
+                        [ Style.flexItemProperties
+                            [ Flex.grow 1
+                            ]
                         ]
                     ]
                     [ pageContent ]
                 ]
             ]
-        , flexItem [] [ nextButton step 3 nextPage linkText ]
+        , flexItem
+            [ style
+                [ Style.flexItemProperties
+                    [ Flex.shrink 0
+                    ]
+                ]
+            ]
+            [ nextButton step 3 nextPage linkText ]
         ]
 
 
