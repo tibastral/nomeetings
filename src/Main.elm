@@ -479,6 +479,8 @@ objectivesCompletionsIndex objectives notes =
                 ++ "\n\n\n"
                 ++ "# Notes:\n\n"
                 ++ notes
+                ++ "\n\n"
+                ++ "Powered by app.notonlymeetings.com - Try it for your next meeting"
             )
         )
         -- (HistoryMsgWrapper GoToObjectivesIndex)
