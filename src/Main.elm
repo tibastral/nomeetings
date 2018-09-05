@@ -238,7 +238,7 @@ title content =
 
 
 appTitle =
-    title "No Meetings"
+    title "Not Only Meetings"
 
 
 littleLine lineWidth color =

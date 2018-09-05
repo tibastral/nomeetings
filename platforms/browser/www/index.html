@@ -35,16 +35,15 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-
         <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
         <style media="screen">
           * {box-sizing: border-box;}
         </style>
-        <title>No Meetings App</title>
+        <title>Not Only Meetings App</title>
     </head>
     <body>
         <div id="app">
-            <h1>No Meetings App</h1>
+            <h1>Not Only Meetings App</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Initialisation app...</p>
                 <p class="event received">Initialisation complete.</p>
@@ -53,5 +52,14 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/elm.js"></script>
         <script type="text/javascript" src="js/embed_elm.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125271626-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-125271626-1');
+        </script>
     </body>
 </html>
