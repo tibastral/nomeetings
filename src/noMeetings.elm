@@ -219,10 +219,10 @@ checkView goal =
                 ]
                 [ grayScaledText
                     (if goal.attributes.achieved then
-                        0.5
+                        1
 
                      else
-                        1
+                        0.5
                     )
                     goal.attributes.title
                 ]
@@ -489,7 +489,7 @@ goalsIndex goals =
             }
         , largePadderHorizontalAndBottom
             [ h1 [ noMargin ] [ grayScaledText 0.8 "Before" ]
-            , p [ noMargin ] [ grayScaledText 0.4 "Set meeting objectives" ]
+            , p [ noMargin ] [ grayScaledText 0.4 "Set meeting goals" ]
             ]
         ]
         (largePadder
@@ -544,6 +544,7 @@ goalsCompletionsIndex goals notes =
         (Share
             ("# Achievements:\n\n"
                 ++ (goals
+                        |> List.reverse
                         |> List.filter (\e -> e.attributes.achieved)
                         |> List.map .attributes
                         |> List.map .title
